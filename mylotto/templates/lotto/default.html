@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<h1>
+    로또 당첨 사이트
+</h1>
+<link rel="stylesheet" href="{% static 'css/lotto.css'%}">
+
+<div class="container lotto">
+    {% for lotto in lottos %}
+    <h2>{{lotto.text}}</h2>
+    <p>last update : {{lotto.update_date}} by {{lotto.name}}</p>
+    <p>{{lotto.lottos|linebreaksbr}}</p>
+    {% endfor %}
+</div>
+

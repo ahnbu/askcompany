@@ -1,0 +1,7 @@
+<form method="POST" class="post-form">
+    {%csrf_token%}
+    {{form.as_ul}}
+    <button type="submit" class="save btn btn-default">저장</button>
+</form>
+<a href="{% url 'modify_memo' memokey=memo.pk %}" class="btn btn-primary modify" role="button">수정</a>
+<a href="{% url 'delete_memo' memokey=memo.pk %}" class="btn btn-default del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>

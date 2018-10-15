@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<h1>
+    메모 사이트
+</h1>
+<link rel="stylesheet" href="{% static 'css/default-style.css'%}">
+
+<div class="container ">
+    {% for Memos in Memos %}
+    <h2>{{Memos.text}}</h2>
+    <p>last update : {{Memos.update_date}} by {{Memos.name}}</p>
+    <p>{{Memos.Memos|linebreaksbr}}</p>
+    {% endfor %}
+</div>
+

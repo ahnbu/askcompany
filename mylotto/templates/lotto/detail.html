@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="ko">
+<head>
+  <link rel="stylesheet" href="{% static 'css/lotto.css'%}">
+</head>
+
+<body>
+    <div class="page-header">
+        <h1>My Lotto Page</h1>
+    </div>
+    <div class="container lotto">
+        <h2>{{lotto.text}}</h2>
+        <p> by {{lotto.name}}</p>
+        <p> {{lotto.update_date}}</p>
+        <p> {{lotto.lottos|linebreaksbr}}</p>
+    </div>
+
+
+  
+    <a href="{% url 'new_lotto'%}">
+        <span class="glyphicon glyphicon-plus btn btn-default"></span>
+    </a>
+    
+    <div class="page-header">
+        <h1>My Lotto Page
+            <a href="{% url 'new_lotto' %}">
+                <span class="glyphicon glyphicon-plus btn btn-default"></span>
+            </a>
+        </h1>
+    </div>
+        
+    <h2>
+        <a href="{% url 'lotto_detail' lottokey=lotto.pk  %}">{{lotto.text}}</a>
+    </h2>
+
+</body>
