@@ -14,7 +14,8 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#__file__은 settings.py의 경로를 절대경로로 바꾸고, 부모 경로를 의미함
+# 이러면, manage.py가 있는 폴더가 경로가 됨
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -25,27 +26,39 @@ SECRET_KEY = '+5mpel(66bb+!v2t3-r39%g6*m$)z(v&mi!mtk*8db1syrep57'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '127.0.0.1', 
-    'ahnbu.pythonanywhere.com',
-    ]
+ALLOWED_HOSTS = ['*',
+]
+#    '127.0.0.1', 
+#    'ahnbu.pythonanywhere.com',
+#    ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'shop',
     'mylotto',
     'memo_app',
+    'portal',
+    'blog',
+
+    'django_extensions',
+    'debug_toolbar',
+    'mathfilters',
+    'django_jinja',
+
+    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,11 +72,33 @@ ROOT_URLCONF = 'askcompany.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        "BACKEND": "django_jinja.backend.Jinja2",
+        "APP_DIRS": True, #장고기본jinja에서는 사용불가했지만, 여기서는 지원 가능
+        "OPTIONS": {
+            "match_extension": ".j2", #어떤 확장자에 대해서 jinja 백엔드 지원할 수 있게 됨
+            'context_processors': [ 
+                "django.contrib.auth.context_processors.auth", #user를 확인해줌
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        }
+    },
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates', # 템플릿엔진
+        'DIRS': [
+            os.path.join(BASE_DIR, 'askcompany','templates'),
+            # 1개 정도만 지정하면 됨, 하위 askcomany폴더안에 있다는 의미
+        ], #프로젝트 레벨의 템플릿을 둘 디렉토리
+        'APP_DIRS': True, #앱별 템플릿 경로 추가 여부
         'OPTIONS': {
-            'context_processors': [
+            'context_processors': [ 
+                #템플릿 내 디폴트 참조할 변수목록 제공하는 함수, request받고, dict를 반환
+                #모든 템플릿에 디폴트로 로딩이 필요한 함수의 경우 지정하는 곳.
+                # render가 될때마다, 아래 함수 처리후 템플릿에 넘겨줌. 
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -129,4 +164,53 @@ STATIC_URL = '/static/'
 # 추가했음
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'askcompany', 'static'),
+]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+INTERNAL_IPS = ['127.0.0.1']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    # 기존 로깅 설정을 무시하지 않고 사용하겠다.
+    'filters': {
+        'require_debug_true': {
+        '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            # settings에서 Debug가 켜있을 경우에만 동작
+            'class': 'logging.StreamHandler',
+        },
+        'write_to_file': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            # settings에서 Debug가 켜있을 경우에만 동작
+            'class': 'logging.FileHandler',
+            'filename': 'db.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'write_to_file'],
+            # console을 설정하면 server화면에 계속 출력
+            # db.log라는 파일에 해당 내용을 저장
+            'level': 'DEBUG',
+        },
+        'shop':{
+            'handlers': ['console'],
+            'level': 'DEBUG', 
+        },
+        'portal':{
+            'handlers': ['console'],
+            'level': 'DEBUG', 
+        }
+    }
+}

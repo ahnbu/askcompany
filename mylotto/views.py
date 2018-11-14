@@ -29,18 +29,6 @@ def detail(request, lottokey):
     lotto = GuessNumbers.objects.get(pk = lottokey)
     return render(request, 'lotto/detail.html', {'lotto': lotto})
 
-def post2(request):
-    if request.method == "POST":
-         # create a form instance and populate it with data from the request:
-        form = PostForm(request.POST) #PostForm으로 부터 받은 데이터를 처리하기 위한 인스턴스 생성
-        if form.is_valid(): #폼 검증 메소드
-            lotto = form.save(commit = False) #lotto 오브젝트를 form으로 부터 가져오지만, 실제로 DB반영은 하지 않는다.
-            lotto.generate()
-            return redirect('index') #url의 name을 경로대신 입력한다.
-    else:
-        form = PostForm() #forms.py의 PostForm 클래스의 인스턴스
-        return render(request, 'lotto/form.html', {'form' : form})  # 템플릿 파일 경로 지정, 데이터 전달
-
 def post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -57,6 +45,21 @@ def post(request):
         return render(request, 'lotto/form.html', {'form': form})
         # 템플릿 파일 경로 지정, 데이터 전달
 
+
+
+
+
+def post2(request):
+    if request.method == "POST":
+         # create a form instance and populate it with data from the request:
+        form = PostForm(request.POST) #PostForm으로 부터 받은 데이터를 처리하기 위한 인스턴스 생성
+        if form.is_valid(): #폼 검증 메소드
+            lotto = form.save(commit = False) #lotto 오브젝트를 form으로 부터 가져오지만, 실제로 DB반영은 하지 않는다.
+            lotto.generate()
+            return redirect('index') #url의 name을 경로대신 입력한다.
+    else:
+        form = PostForm() #forms.py의 PostForm 클래스의 인스턴스
+        return render(request, 'lotto/form.html', {'form' : form})  # 템플릿 파일 경로 지정, 데이터 전달
 
 
 ######### CSV, 이미지 처리 앱 ################################################################################

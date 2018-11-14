@@ -1,16 +1,34 @@
-<!DOCTYPE html>
+{% extends "portal/layout.html" %}
+
 {% load staticfiles %}
 
-<h1>
-    로또 당첨 사이트
-</h1>
-<link rel="stylesheet" href="{% static 'css/lotto.css'%}">
+{% load humanize %}
 
-<div class="container lotto">
-    {% for lotto in lottos %}
-    <h2>{{lotto.text}}</h2>
-    <p>last update : {{lotto.update_date}} by {{lotto.name}}</p>
-    <p>{{lotto.lottos|linebreaksbr}}</p>
-    {% endfor %}
-</div>
+{% block content %}
+    <div class="w3-main-content" style="margin-left:30px;margin-top:70px">
+        <h1>
+            로또 당첨 사이트
+        </h1>
+        <h2>
+            <a href = "./new/">학유야 놀려면 여기를 눌러줘~^^</a>
+        </h2>
+        <br />
+        <br />
+        <br />
+        <link rel="stylesheet" href="{% static 'css/lotto.css'%}">
+
+        <div class="container lotto">
+            {% for lotto in lottos %}
+            <h2>{{lotto.text}}</h2>
+            <p>last update : {{lotto.update_date}} by {{lotto.name}}</p>
+            <p>{{lotto.lottos|linebreaksbr}}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h2>
+        <a href = "./new/">학유야 놀려면 여기를 눌러줘~^^</a>
+    </h2>
+{% endblock %}
+
 

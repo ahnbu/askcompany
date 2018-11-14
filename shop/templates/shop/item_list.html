@@ -1,0 +1,27 @@
+{% extends "shop/layout.html" %}
+
+{% load humanize %}
+
+{% block content %}
+    <form action ="" method ="GET">
+        <input type = "text" name = "q" value = "{{ q }}" />
+        <input type = "submit" value = "search" />
+    </form>
+
+    <ul>
+        {% for item in item_list %}
+        <li>
+            <a href="{{ item.get_absolut_url">
+                {{ item.name }}
+            </a>
+            <br>
+            가격: {{ item.price|intcomma }}원<br>
+            {{ item.desc }}<br>
+        </li>
+        {% endfor %}
+    </ul>
+    <hr />
+    <a href="{% url "shop:item_new" %}">New Item 추가</a>
+{% endblock %}
+
+

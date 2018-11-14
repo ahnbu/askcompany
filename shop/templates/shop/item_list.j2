@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>ahnbu's page</title>            
+    </head>
+    <body>
+        <h1> ahnbu's page </h1>
+
+        {{ user }}
+        {{ perms }}
+
+        <form action ="" method ="GET">
+            <input type = "text" name = "q" value = "{{ q }}" />
+            <input type = "submit" value = "search" />
+        </form>
+    
+        <ul>
+            {% for item in item_list %}
+            <li>
+                {{ item.name }}<br>
+                가격: {{ item.price }}<br>
+                {{ item.desc }}<br>
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

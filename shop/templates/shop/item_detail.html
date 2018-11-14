@@ -1,0 +1,30 @@
+{% extends "shop/layout.html" %}
+
+{% load humanize %}
+
+{% block content %}
+    <h2>{{ item.name }} </h2>
+
+    {% if item.photo %}
+        {{ item.photo.url }} <br />
+        {{ item.photo.path }} <br />
+        <img src="{{ item.photo.url }}" width = 300 /><br />
+    {% endif %}
+    
+    <p>
+        {{item.price|intcomma}}원
+    </p>
+
+    {% if item.desc %}
+        <p>
+            {{item.desc}}
+        </p>
+    {% endif %}
+
+    <hr/>
+    <a href="{% url "shop:item_list" %}">목록으로 이동</a>
+    <hr/>
+    <a href="{% url "shop:item_edit" item.pk %}">수정</a>
+
+{% endblock %}
+
